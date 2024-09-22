@@ -1,0 +1,38 @@
+service: auth-api
+
+frameworkVersion: "4"
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  region: ap-south-1
+  stage: ${opt:stage, 'dev'}
+
+functions:
+  authHandler:
+    handler: handler.handler
+    events:
+      - http:
+          path: api/v1/signup
+          method: post
+      - http:
+          path: api/v1/verify-otp
+          method: post
+      - http:
+          path: api/v1/login
+          method: post
+      - http:
+          path: api/v1/logout
+          method: post
+      - http:
+          path: api/v1/islogin
+          method: get
+
+plugins:
+  - serverless-offline
+  - serverless-dotenv-plugin
+
+package:
+  exclude:
+    - .git/**
+    - .env/**
